@@ -12,7 +12,7 @@ A comprehensive e-commerce microservices platform to master Docker and Kubernete
 
 ## 🏗️ [Architecture](./docs/architecture/)
 
-[k8s_microservice_architecture](./docs/architecture/k8s_microservices_architecture.svg)
+![k8s_microservice_architecture](./docs/architecture/k8s_microservices_architecture.svg)
 
 ## 🚀 Quick Start
 ```bash
@@ -34,11 +34,11 @@ kubectl port-forward -n ecommerce svc/frontend 8080:80
 ## 📁 Project Structure
 ```
 k8s-microservices-platform/
-├── [apps/](./apps/)                      # Application source code
-├── [k8s/](./k8s/)                        # Kubernetes manifests
-├── [helm/](./helm/)                      # Helm charts
-├── [scripts/](./scripts/)                # Automation scripts
-├── [docs/](./docs/)                      # Documentation
+├── apps/                     # Application source code
+├── k8s/                      # Kubernetes manifests
+├── helm/                     # Helm charts
+├── scripts/                  # Automation scripts
+├── docs/                     # Documentation
 └── README.md
 ```
 
