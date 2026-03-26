@@ -10,34 +10,9 @@ A comprehensive e-commerce microservices platform to master Docker and Kubernete
 - GitOps with ArgoCD
 - Complete CI/CD pipeline
 
-## 🏗️ Architecture
-```
-         ┌─────────────────────────┐
-         │   NGINX Ingress + TLS   │
-         └───────────┬─────────────┘
-                     │
-     ┌───────────────┼───────────────┐
-     │               │               │
-┌────▼────┐    ┌────▼────┐    ┌────▼────┐
-│Frontend │    │   API   │    │  Admin  │
-│ (React) │    │ Gateway │    │Dashboard│
-└────┬────┘    └────┬────┘    └────┬────┘
-     │              │              │
-     └──────────────┼──────────────┘
-                    │
-     ┌──────────────┼──────────────┐
-     │              │              │
-┌────▼────┐   ┌────▼────┐   ┌────▼────┐
-│ Product │   │  Order  │   │  User   │
-│ Service │   │ Service │   │ Service │
-│(FastAPI)│   │  (Go)   │   │(NestJS) │
-└────┬────┘   └────┬────┘   └────┬────┘
-     │             │             │
-┌────▼────┐   ┌───▼────┐   ┌───▼─────┐
-│Postgres │   │Postgres│   │Postgres │
-│StatefulS│   │StatefulS   │StatefulS│
-└─────────┘   └────────┘   └─────────┘
-```
+## 🏗️ [Architecture](./docs/architecture/)
+
+![k8s_microservice_architecture](./docs/architecture/k8s_microservices_architecture.svg)
 
 ## 🚀 Quick Start
 ```bash
@@ -59,11 +34,11 @@ kubectl port-forward -n ecommerce svc/frontend 8080:80
 ## 📁 Project Structure
 ```
 k8s-microservices-platform/
-├── apps/                   # Application source code
-├── k8s/                    # Kubernetes manifests
-├── helm/                   # Helm charts
-├── scripts/                # Automation scripts
-├── docs/                   # Documentation
+├── apps/                     # Application source code
+├── k8s/                      # Kubernetes manifests
+├── helm/                     # Helm charts
+├── scripts/                  # Automation scripts
+├── docs/                     # Documentation
 └── README.md
 ```
 
@@ -80,6 +55,6 @@ k8s-microservices-platform/
 
 ## 📖 Full Documentation
 
-See `/docs` for complete guides on architecture, deployment, and troubleshooting.
+See [`/docs`](./docs/) for complete guides on architecture, deployment, and troubleshooting.
 
 MIT License
