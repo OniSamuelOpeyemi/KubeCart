@@ -4,8 +4,8 @@ FROM python:3.11-slim AS builder
 WORKDIR /app
 
 # Install dependencies
-COPY requirements.txt .
-RUN pip install --user --no-cache-dir -r requirements.txt
+COPY requirement.txt .
+RUN pip install --user --no-cache-dir -r requirement.txt
 
 # Final stage
 FROM python:3.11-slim
