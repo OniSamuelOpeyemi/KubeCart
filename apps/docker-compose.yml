@@ -1,0 +1,132 @@
+# version: '3.8'
+
+services:
+  # Frontend - React SPA
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:3000
+    depends_on:
+      - api-gateway
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+  # 2. API Gateway - Node.js
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=development
+      - PORT=8080
+      # You can add service URLs here or better - use Docker service names inside the gateway code
+      - PRODUCT_SERVICE_URL=http://product-service:8000
+      - ORDER_SERVICE_URL=http://order-service:8080
+      - USER_SERVICE_URL=http://user-service:3000
+    depends_on:
+      - product-service
+      - order-service
+      - user-service
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+  # 3. Product Service - Python/FastAPI
+  product-service:
+    build:
+      context: ./product-service
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@product-db:5432/productdb
+    depends_on:
+      - product-db
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+  # 4. Order Service - Go/Gin
+  order-service:
+    build:
+      context: ./order-service
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8080"
+    environment:
+      - DB_HOST=order-db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+      - DB_NAME=orderdb
+    depends_on:
+      - order-db
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+  # 5. User Service - Node.js/NestJS
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: Dockerfile
+    ports:
+      - "8003:3000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@user-db:5432/userdb
+      - JWT_SECRET=your-super-secret-jwt-key-change-in-production
+    depends_on:
+      - user-db
+    networks:
+      - microservices-net
+    restart: unless-stopped
+
+  # Databases (Database-per-Service pattern)
+  product-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: productdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - product-db-data:/var/lib/postgresql/data
+    networks:
+      - microservices-net
+
+  order-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: orderdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - order-db-data:/var/lib/postgresql/data
+    networks:
+      - microservices-net
+
+  user-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: userdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+    networks:
+      - microservices-net
+
+volumes:
+  product-db-data:
+  order-db-data:
+  user-db-data:
+
+networks:
+  microservices-net:
+    driver: bridge
