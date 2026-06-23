@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "nest start",
-    "start:prod": "node dist/main"
+    "start:prod": "node dist/main",
+    "build": "nest build"
   },
   "dependencies": {
     "@nestjs/common": "^11.1.27",
