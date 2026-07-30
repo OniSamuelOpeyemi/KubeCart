@@ -8,6 +8,7 @@ import logging
 from prometheus_client import Counter, Histogram, generate_latest
 from fastapi.responses import Response
 import time
+import asyncio
 
 # Logging setup
 logging.basicConfig(level=logging.INFO)
@@ -51,48 +52,81 @@ class ProductCreate(BaseModel):
 async def get_db_pool():
     global db_pool
     if db_pool is None:
-        db_pool = await asyncpg.create_pool(
-            host=os.getenv("DB_HOST", "postgres-product"),
-            port=int(os.getenv("DB_PORT", "5432")),
-            database=os.getenv("DB_NAME", "products"),
-            user=os.getenv("DB_USER", "postgres"),
-            password=os.getenv("DB_PASSWORD", "postgres"),
-            min_size=5,
-            max_size=20
-        )
+        # Parse DATABASE_URL if provided, otherwise use individual env vars
+        db_url = os.getenv("DATABASE_URL")
+        
+        if db_url:
+            db_pool = await asyncpg.create_pool(
+                db_url,
+                min_size=5,
+                max_size=20,
+                server_settings={'application_name': 'product-service'}
+            )
+        else:
+            db_pool = await asyncpg.create_pool(
+                host=os.getenv("DB_HOST", "product-db"),
+                port=int(os.getenv("DB_PORT", "5432")),
+                database=os.getenv("DB_NAME", "productdb"),
+                user=os.getenv("DB_USER", "postgres"),
+                password=os.getenv("DB_PASSWORD", "password"),
+                min_size=5,
+                max_size=20
+            )
     return db_pool
+
+async def connect_with_retry(max_retries=10, retry_delay=2):
+    """Connect to database with exponential backoff retry"""
+    for attempt in range(max_retries):
+        try:
+            pool = await get_db_pool()
+            async with pool.acquire() as conn:
+                await conn.fetchval('SELECT 1')
+            logger.info(f"Database connection successful on attempt {attempt + 1}")
+            return pool
+        except Exception as e:
+            if attempt < max_retries - 1:
+                wait_time = retry_delay * (2 ** attempt)
+                logger.warning(f"Database connection failed (attempt {attempt + 1}/{max_retries}): {str(e)}. Retrying in {wait_time}s...")
+                await asyncio.sleep(wait_time)
+            else:
+                logger.error(f"Database connection failed after {max_retries} attempts")
+                raise
 
 @app.on_event("startup")
 async def startup():
     logger.info("Starting Product Service...")
-    pool = await get_db_pool()
-    
-    # Create table if not exists
-    async with pool.acquire() as conn:
-        await conn.execute('''
-            CREATE TABLE IF NOT EXISTS products (
-                id SERIAL PRIMARY KEY,
-                name VARCHAR(255) NOT NULL,
-                description TEXT,
-                price DECIMAL(10, 2) NOT NULL,
-                stock INTEGER NOT NULL,
-                category VARCHAR(100),
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-            )
-        ''')
+    try:
+        pool = await connect_with_retry()
         
-        # Insert sample data
-        count = await conn.fetchval('SELECT COUNT(*) FROM products')
-        if count == 0:
+        # Create table if not exists
+        async with pool.acquire() as conn:
             await conn.execute('''
-                INSERT INTO products (name, description, price, stock, category) VALUES
-                ('Laptop', 'High-performance laptop', 1299.99, 50, 'Electronics'),
-                ('Mouse', 'Wireless mouse', 29.99, 200, 'Electronics'),
-                ('Keyboard', 'Mechanical keyboard', 89.99, 150, 'Electronics'),
-                ('Monitor', '27-inch 4K monitor', 399.99, 75, 'Electronics'),
-                ('Headphones', 'Noise-cancelling headphones', 249.99, 100, 'Electronics')
+                CREATE TABLE IF NOT EXISTS products (
+                    id SERIAL PRIMARY KEY,
+                    name VARCHAR(255) NOT NULL,
+                    description TEXT,
+                    price DECIMAL(10, 2) NOT NULL,
+                    stock INTEGER NOT NULL,
+                    category VARCHAR(100),
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
             ''')
-            logger.info("Sample products inserted")
+            
+            # Insert sample data
+            count = await conn.fetchval('SELECT COUNT(*) FROM products')
+            if count == 0:
+                await conn.execute('''
+                    INSERT INTO products (name, description, price, stock, category) VALUES
+                    ('Laptop', 'High-performance laptop', 1299.99, 50, 'Electronics'),
+                    ('Mouse', 'Wireless mouse', 29.99, 200, 'Electronics'),
+                    ('Keyboard', 'Mechanical keyboard', 89.99, 150, 'Electronics'),
+                    ('Monitor', '27-inch 4K monitor', 399.99, 75, 'Electronics'),
+                    ('Headphones', 'Noise-cancelling headphones', 249.99, 100, 'Electronics')
+                ''')
+                logger.info("Sample products inserted")
+    except Exception as e:
+        logger.error(f"Startup failed: {str(e)}")
+        raise
 
 @app.on_event("shutdown")
 async def shutdown():

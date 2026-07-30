@@ -48,7 +48,8 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:password@product-db:5432/productdb
     depends_on:
-      - product-db
+      product-db:
+        condition: service_healthy
     networks:
       - microservices-net
     restart: unless-stopped
@@ -67,7 +68,8 @@ services:
       - DB_PASSWORD=password
       - DB_NAME=orderdb
     depends_on:
-      - order-db
+      order-db:
+        condition: service_healthy
     networks:
       - microservices-net
     restart: unless-stopped
@@ -81,9 +83,11 @@ services:
       - "8003:3000"
     environment:
       - DATABASE_URL=postgresql://postgres:password@user-db:5432/userdb
+      - DB_HOST=user-db  
       - JWT_SECRET=your-super-secret-jwt-key-change-in-production
     depends_on:
-      - user-db
+      user-db:
+        condition: service_healthy
     networks:
       - microservices-net
     restart: unless-stopped
@@ -99,6 +103,11 @@ services:
       - product-db-data:/var/lib/postgresql/data
     networks:
       - microservices-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   order-db:
     image: postgres:15-alpine
@@ -110,6 +119,11 @@ services:
       - order-db-data:/var/lib/postgresql/data
     networks:
       - microservices-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   user-db:
     image: postgres:15-alpine
@@ -121,6 +135,11 @@ services:
       - user-db-data:/var/lib/postgresql/data
     networks:
       - microservices-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   product-db-data:
