@@ -1,17 +1,24 @@
-FROM node:20-alpine AS builder
+FROM node:20-slim AS builder
 
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install 
-
+# If you have package-lock.json, this ensures it's copied:
+COPY package-lock.json ./  
+RUN npm ci --legacy-peer-deps
+# RUN npm ci
+# RUN npm install --legacy-peer-deps
 COPY . .
 RUN npm run build
 
-FROM node:20-alpine
+FROM node:20-slim
 
-RUN addgroup -g 1001 -S nodejs && \
-    adduser -S nodejs -u 1001
+# RUN addgroup -g 1001 -S nodejs && \
+#    adduser -S nodejs -u 1001
+    
+RUN groupadd -g 1001 nodejs && \
+    useradd -u 1001 -g nodejs -s /sbin/nologin -M nodejs
+
 
 WORKDIR /app
 
