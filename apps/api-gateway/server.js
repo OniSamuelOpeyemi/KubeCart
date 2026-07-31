@@ -5,7 +5,7 @@ const cors = require('cors');
 const promClient = require('prom-client');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 // Prometheus metrics
 const register = new promClient.Registry();

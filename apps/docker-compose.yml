@@ -9,7 +9,7 @@ services:
     ports:
       - "5000:80"
     environment:
-      - REACT_APP_API_URL=http://localhost:3000
+      - REACT_APP_API_URL=http://localhost:8080  
     depends_on:
       - api-gateway
     networks:
@@ -83,7 +83,7 @@ services:
       - "8003:3000"
     environment:
       - DATABASE_URL=postgresql://postgres:password@user-db:5432/userdb
-      - DB_HOST=user-db  
+        
       - JWT_SECRET=your-super-secret-jwt-key-change-in-production
     depends_on:
       user-db:

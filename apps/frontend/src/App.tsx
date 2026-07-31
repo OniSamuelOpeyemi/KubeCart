@@ -10,7 +10,8 @@ interface Product {
   category: string;
 }
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+// Use relative paths - nginx will proxy /api to the gateway
+const API_URL = '';
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
