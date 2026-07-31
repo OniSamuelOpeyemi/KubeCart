@@ -138,11 +138,191 @@ button {
   padding: 2rem 0 3rem;
 }
 
-.overview {
+.summary-grid {
   display: grid;
-  gap: 1.5rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
   margin-bottom: 2rem;
 }
+
+.summary-card {
+  padding: 1.25rem 1.5rem;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.05);
+}
+
+.summary-card strong {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 2rem;
+  color: #111827;
+}
+
+.summary-label {
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-copy {
+  color: #4b5563;
+  margin-top: 0.5rem;
+  max-width: 62ch;
+}
+
+.topbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.alert-box {
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  border-radius: 18px;
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  color: #92400e;
+}
+
+.grid-two {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1.5rem;
+}
+
+.panel {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 1.5rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.05);
+}
+
+.form-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.table th,
+.table td {
+  padding: 0.95rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.table th {
+  color: #4b5563;
+  font-weight: 700;
+  background: #f8fafc;
+}
+
+.table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.button.small {
+  padding: 0.65rem 0.9rem;
+  font-size: 0.85rem;
+}
+
+.checkout-card {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 22px;
+  border: 1px solid #e5e7eb;
+  background: #f8fafc;
+  margin-bottom: 1rem;
+}
+
+.checkout-card img {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 18px;
+}
+
+.form-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-grid label {
+  display: grid;
+  gap: 0.5rem;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.form-grid input,
+.form-grid textarea,
+.form-grid select {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  outline: none;
+}
+
+.form-grid textarea {
+  resize: vertical;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.price-summary {
+  padding: 0.95rem 1rem;
+  border-radius: 14px;
+  background: #eef2ff;
+  color: #1f2937;
+  font-weight: 700;
+}
+
+@media (max-width: 980px) {
+  .summary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid-two {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header {
+    flex-direction: column;
+  }
+}
+
 
 .overview-metrics {
   display: grid;
