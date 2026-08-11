@@ -36,6 +36,18 @@ kind delete cluster --name kubecart-platform
 kubectl cluster-info
 kubectl get nodes
 ```
+# Setting up dashboard using Headlamp
+---
+NB: It is installed using helms with the command below;
+
+```bash
+helm install my-headlamp headlamp/headlamp \
+  --namespace headlamp \
+  --create-namespace \
+  -f values.yaml
+```
+Check out [Headlamp](https://headlamp.dev/) for more info. 
+
 
 ### Pod Operations
 ```bash
