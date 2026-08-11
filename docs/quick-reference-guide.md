@@ -36,9 +36,36 @@ kind delete cluster --name kubecart-platform
 kubectl cluster-info
 kubectl get nodes
 ```
-# Setting up dashboard using Headlamp
+## Setting up dashboard using Headlamp
 ---
-NB: It is installed using helms with the command below;
+# Create headlamp namespace 
+
+```bash
+kubectl create namespace headlamp
+```
+# Map a hostname such as *headlamp.local* to an IP address through the Windows hosts file
+
+```bash
+# Check your node for IP 
+kubectl get nodes -o wide
+
+# Locate the Windows hosts file
+C:\Windows\System32\drivers\etc\hosts
+
+# Add your Headlamp hostname
+Add your Headlamp hostname
+
+# Test 
+
+ping headlamp.local
+```
+# Add headlamp chart to local repo
+```bash 
+$ helm repo add headlamp https://kubernetes-sigs.github.io/headlamp/
+$ helm repo update
+```
+
+*It is installed using helms with the command below;*
 
 ```bash
 helm install my-headlamp headlamp/headlamp \
@@ -46,6 +73,14 @@ helm install my-headlamp headlamp/headlamp \
   --create-namespace \
   -f values.yaml
 ```
+# Get URL and Token 
+```bash
+# Get the application URL by running these commands:
+http://headlamp.local/
+# Get the token using
+kubectl create token my-headlamp --namespace headlamp
+```
+
 Check out [Headlamp](https://headlamp.dev/) for more info. 
 
 

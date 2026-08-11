@@ -5,5 +5,5 @@ ingress:
     - host: headlamp.local
       paths:
         - path: /
-          pathType: Prefix
+          type: Prefix
         
