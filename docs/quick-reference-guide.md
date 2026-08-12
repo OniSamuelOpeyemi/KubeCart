@@ -38,12 +38,12 @@ kubectl get nodes
 ```
 ## Setting up dashboard using Headlamp
 ---
-# Create headlamp namespace 
+### Create headlamp namespace 
 
 ```bash
 kubectl create namespace headlamp
 ```
-# Map a hostname such as *headlamp.local* to an IP address through the Windows hosts file
+### Map a hostname such as *headlamp.local* to an IP address through the Windows hosts file
 
 ```bash
 # Check your node for IP 
@@ -58,7 +58,7 @@ Add your Headlamp hostname
 # Test 
 ping headlamp.local
 ```
-# Add headlamp chart to local repo
+### Add headlamp chart to local repo
 ```bash 
 $ helm repo add headlamp https://kubernetes-sigs.github.io/headlamp/
 $ helm repo update
@@ -72,7 +72,7 @@ helm install my-headlamp headlamp/headlamp \
   --create-namespace \
   -f values.yaml
 ```
-# Get URL and Token 
+### Get URL and Token 
 ```bash
 # Get the application URL by running these commands:
 http://headlamp.local/
@@ -85,7 +85,7 @@ Check out [Headlamp](https://headlamp.dev/) for more info.
 ## Install observability infrastructure (Monitoring and Logging)
 Prometheus (Metricss) + Loki (Logging) + Grafana (Dashboard)
 
-# Map a hostname such as *grafana.local* to an IP address through the Windows hosts file
+### Map a hostname such as *grafana.local* to an IP address through the Windows hosts file
 
 ```bash
 # Check your node for IP 
@@ -100,7 +100,7 @@ Add your Grafana hostname
 # Test 
 ping grafana.local
 
-Install oberservability infrastructure using [deploy-infrastructure](../scripts/deploy-infrastructure.sh)
+*Install oberservability infrastructure using [deploy-infrastructure](../scripts/deploy-infrastructure.sh)*
 
 ```bash 
 # Change to script directory
@@ -113,7 +113,7 @@ chmod +x deploy-infrastructure.sh
 # Run the script 
 ./deploy-infrastructure.sh
 ```
-# Create Grafana ingress
+### Create Grafana ingress
 ```bash 
 # Create grafana ingress with the ingress file
 cd ~/KubeCart/kubernetes/
@@ -121,7 +121,7 @@ cd ~/KubeCart/kubernetes/
 # Apply the ingress file 
 kubectl apply -f grafana-ingress.yaml
 ```
-# Logging into Grafana dashboard 
+### Login into Grafana dashboard 
 
 1. Get the Grafana Username
 
