@@ -56,7 +56,6 @@ C:\Windows\System32\drivers\etc\hosts
 Add your Headlamp hostname
 
 # Test 
-
 ping headlamp.local
 ```
 # Add headlamp chart to local repo
@@ -82,8 +81,62 @@ kubectl create token my-headlamp --namespace headlamp
 ```
 
 Check out [Headlamp](https://headlamp.dev/) for more info. 
+--- 
+## Install observability infrastructure (Monitoring and Logging)
+Prometheus (Metricss) + Loki (Logging) + Grafana (Dashboard)
 
+# Map a hostname such as *grafana.local* to an IP address through the Windows hosts file
 
+```bash
+# Check your node for IP 
+kubectl get nodes -o wide
+
+# Locate the Windows hosts file
+C:\Windows\System32\drivers\etc\hosts
+
+# Add your Headlamp hostname
+Add your Grafana hostname
+
+# Test 
+ping grafana.local
+
+Install oberservability infrastructure using [deploy-infrastructure](../scripts/deploy-infrastructure.sh)
+
+```bash 
+# Change to script directory
+pwd 
+cd ~/KubeCart/scripts/
+
+# Make deploy-infrastructure.sh executable 
+chmod +x deploy-infrastructure.sh
+
+# Run the script 
+./deploy-infrastructure.sh
+```
+# Create Grafana ingress
+```bash 
+# Create grafana ingress with the ingress file
+cd ~/KubeCart/kubernetes/
+
+# Apply the ingress file 
+kubectl apply -f grafana-ingress.yaml
+```
+# Logging into Grafana dashboard 
+
+1. Get the Grafana Username
+
+```bash 
+kubectl get secret prometheus-grafana -n monitoring \
+  -o jsonpath="{.data.admin-user}" | base64 -d
+```
+2. Get Grafana Password 
+
+```bash 
+kubectl get secret prometheus-grafana -n monitoring \
+  -o jsonpath="{.data.admin-password}" | base64 -d
+
+```
+---
 ### Pod Operations
 ```bash
 # Get all pods
@@ -106,8 +159,7 @@ kubectl exec <pod-name> -n kubecart -- env
 
 # Port forward
 kubectl port-forward <pod-name> -n kubecart 8080:8000
-```
-
+``` 
 ### Deployment Operations
 ```bash
 # Get deployments
