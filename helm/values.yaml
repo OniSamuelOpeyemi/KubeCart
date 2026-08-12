@@ -1,0 +1,9 @@
+# values.yaml
+ingress:
+  enabled: true
+  hosts:
+    - host: headlamp.local
+      paths:
+        - path: /
+          type: Prefix
+        
