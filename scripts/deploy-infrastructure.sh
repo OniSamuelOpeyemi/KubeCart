@@ -2,9 +2,13 @@
 # deploy-infrastructure.sh
 
 # Create namespaces
-kubectl create namespace ecommerce
-kubectl create namespace monitoring
-kubectl create namespace logging
+for ns in ecommerce monitoring logging; do
+  if kubectl get namespace "$ns" >/dev/null 2>&1; then
+    echo "Namespace '$ns' already exists, skipping."
+  else
+    kubectl create namespace "$ns"
+  fi
+done
 
 # Install cert-manager
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.yaml
