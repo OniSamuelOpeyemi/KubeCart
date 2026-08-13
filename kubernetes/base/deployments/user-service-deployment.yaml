@@ -33,7 +33,7 @@ spec:
         fsGroup: 1001
       containers:
       - name: user-service
-        image: user-service:v1.0.0
+        image: oniesammy/kubecart-user-service:v1.0.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 3000
@@ -45,7 +45,7 @@ spec:
         - name: DB_PORT
           value: "5432"
         - name: DB_NAME
-          value: users
+          value: userdb
         - name: DB_USER
           value: postgres
         - name: DB_PASSWORD
@@ -53,6 +53,10 @@ spec:
             secretKeyRef:
               name: postgres-secrets
               key: password
+        - name: DATABASE_URL
+          value: postgresql://postgres:password@postgres-user.ecommerce.svc.cluster.local:5432/userdb
+        - name: JWT_SECRET
+          value: your-super-secret-jwt-key-change-in-production
         resources:
           requests:
             memory: "256Mi"
