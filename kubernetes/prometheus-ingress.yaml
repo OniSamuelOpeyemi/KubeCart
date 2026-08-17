@@ -3,10 +3,10 @@ kind: Ingress
 metadata:
   name: prometheus
   namespace: monitoring
-spec:
+      spec:
   ingressClassName: nginx
   rules:
-    - host: prometheus.local
+        - host: prometheus.local
       http:
         paths:
           - path: /

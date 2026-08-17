@@ -33,7 +33,7 @@ spec:
         fsGroup: 1000
       containers:
       - name: product-service
-        image: product-service:v1.0.0
+        image: oniesammy/kubecart-product-service:v1.0.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
@@ -45,7 +45,7 @@ spec:
         - name: DB_PORT
           value: "5432"
         - name: DB_NAME
-          value: products
+          value: productdb
         - name: DB_USER
           value: postgres
         - name: DB_PASSWORD
@@ -53,6 +53,8 @@ spec:
             secretKeyRef:
               name: postgres-secrets
               key: password
+        - name: DATABASE_URL
+          value: postgresql://postgres:password@postgres-product.ecommerce.svc.cluster.local:5432/productdb
         resources:
           requests:
             memory: "256Mi"

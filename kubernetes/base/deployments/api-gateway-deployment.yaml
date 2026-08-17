@@ -33,13 +33,17 @@ spec:
         fsGroup: 1001
       containers:
       - name: api-gateway
-        image: api-gateway:v1.0.0
+        image: oniesammy/kubecart-api-gateway:v1.0.0
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 3000
+        - containerPort: 8080
           name: http
           protocol: TCP
         env:
+        - name: NODE_ENV
+          value: development
+        - name: PORT
+          value: "8080"
         - name: PRODUCT_SERVICE_URL
           value: http://product-service.ecommerce.svc.cluster.local:8000
         - name: ORDER_SERVICE_URL

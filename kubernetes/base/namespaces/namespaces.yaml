@@ -1,5 +1,4 @@
-// This file defines three Kubernetes namespaces: ecommerce, monitoring, and logging. Each namespace is labeled with its name and environment (for ecommerce). The namespaces are used to logically separate resources in a Kubernetes cluster.
-
+# This file defines three Kubernetes namespaces: ecommerce, monitoring, and logging. Each namespace is labeled with its name and environment (for ecommerce). The namespaces are used to logically separate resources in a Kubernetes cluster.
 apiVersion: v1
 kind: Namespace
 metadata:
