@@ -3,14 +3,14 @@ resources:
   - rbac/service-accounts.yaml
   - services/services.yaml
   - secrets/postgres-secrets.yml
+  - databases/postgres-product-statefulset.yaml
+  - databases/postgres-order-statefulset.yaml
+  - databases/postgres-user-statefulset.yaml
   - deployments/frontend-deployment.yaml
   - deployments/api-gateway-deployment.yaml
   - deployments/product-service-deployment.yaml
   - deployments/order-service-deployment.yaml
   - deployments/user-service-deployment.yaml
-  - databases/postgres-product-statefulset.yaml
-  - databases/postgres-order-statefulset.yaml
-  - databases/postgres-user-statefulset.yaml
   - Ingress/Ingress.yaml
   - configmaps/app-config.yaml
   - hpa/hpa.yaml
