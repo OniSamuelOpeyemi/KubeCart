@@ -3,12 +3,13 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 K8S_DIR="$ROOT_DIR/kubernetes/base"
+CLUSTER_NAME="kubecart" 
 
 # Images mapped to app directories
 declare -A IMAGEMAP=(
   [oniesammy/kubecart-frontend:v1.0.0]="$ROOT_DIR/apps/frontend"
   [oniesammy/kubecart-api-gateway:v1.0.0]="$ROOT_DIR/apps/api-gateway"
-  [oniesammy/kubecart-product-service:v1.0.0]="$ROOT_DIR/apps/product-service"
+  [oniesammy/kubecart-product-service:v1.0.2]="$ROOT_DIR/apps/product-service"
   [oniesammy/kubecart-order-service:v1.0.0]="$ROOT_DIR/apps/order-service"
   [oniesammy/kubecart-user-service:v1.0.0]="$ROOT_DIR/apps/user-service"
 )
@@ -24,8 +25,8 @@ if [[ $SKIP_BUILD -eq 0 ]]; then
     dir="${IMAGEMAP[$img]}"
     echo "Building $img from $dir"
     docker build -t "$img" "$dir"
-    echo "Loading $img into kind cluster"
-    kind load docker-image "$img"
+    echo "Loading $img into kind cluster ($CLUSTER_NAME)"
+    kind load docker-image "$img" --name "$CLUSTER_NAME"
   done
 else
   echo "Skipping image build/load (user requested --skip-build)"
