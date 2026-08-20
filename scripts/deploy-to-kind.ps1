@@ -9,7 +9,7 @@ $K8sDir = Join-Path $Root "kubernetes\base"
 $images = @{
   'oniesammy/kubecart-frontend:v1.0.0' = Join-Path $Root 'apps\frontend'
   'oniesammy/kubecart-api-gateway:v1.0.0' = Join-Path $Root 'apps\api-gateway'
-  'oniesammy/kubecart-product-service:v1.0.0' = Join-Path $Root 'apps\product-service'
+  'oniesammy/kubecart-product-service:v1.0.2' = Join-Path $Root 'apps\product-service'
   'oniesammy/kubecart-order-service:v1.0.0' = Join-Path $Root 'apps\order-service'
   'oniesammy/kubecart-user-service:v1.0.0' = Join-Path $Root 'apps\user-service'
 }

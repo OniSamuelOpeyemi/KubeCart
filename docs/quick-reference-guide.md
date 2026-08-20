@@ -36,6 +36,7 @@ kind delete cluster --name kubecart-platform
 kubectl cluster-info
 kubectl get nodes
 ```
+## *For window local deveployment*
 ## Setting up dashboard using Headlamp
 ---
 ### Create headlamp namespace 
@@ -121,7 +122,7 @@ cd ~/KubeCart/kubernetes/
 # Apply the ingress file 
 kubectl apply -f grafana-ingress.yaml
 ```
-### Login into Grafana dashboard 
+### Log in into Grafana dashboard 
 
 1. Get the Grafana Username
 
@@ -134,8 +135,44 @@ kubectl get secret prometheus-grafana -n monitoring \
 ```bash 
 kubectl get secret prometheus-grafana -n monitoring \
   -o jsonpath="{.data.admin-password}" | base64 -d
-
 ```
+
+## Deployment using Kustomize
+```bash 
+# Step 1: Build docker image
+ docker build -t (image name and tag) (path to dockerfile)
+
+ # Step 2: Load image to kind cluster
+ kind load docker-image (image name and tag)
+ ```
+
+```bash
+# Step 3: Preview changes (dry-run)
+# local dry-run
+kubectl kustomize base/ | kubectl apply --dry-run=client -f -
+
+# server dry-run
+kubectl kustomize base/ | kubectl apply --dry-run=server -f -
+# Looks good? Proceed to step 2
+
+# Step 4: Actually deploy
+kubectl apply -k base/
+# Output shows: deployment.apps/api-gateway configured
+# Changes applied live!
+```
+---
+
+## Deployment using script
+```bash 
+# Reference resource deployment script
+cd ./scripts/
+# Make the script executable
+chmod +x resource-deployment.sh
+
+# Run the script
+./resource-deployment.sh
+```
+
 ---
 ### Pod Operations
 ```bash

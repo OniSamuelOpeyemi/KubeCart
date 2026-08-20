@@ -9,7 +9,7 @@ spec:
     kind: Deployment
     name: product-service
   minReplicas: 3
-  maxReplicas: 10
+  maxReplicas: 5
   metrics:
   - type: Resource
     resource:
@@ -48,7 +48,7 @@ spec:
     kind: Deployment
     name: order-service
   minReplicas: 3
-  maxReplicas: 10
+  maxReplicas: 5
   metrics:
   - type: Resource
     resource:
@@ -74,7 +74,7 @@ spec:
     kind: Deployment
     name: user-service
   minReplicas: 3
-  maxReplicas: 10
+  maxReplicas: 5
   metrics:
   - type: Resource
     resource:
