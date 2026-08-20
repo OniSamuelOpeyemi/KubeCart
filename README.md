@@ -20,16 +20,6 @@ A comprehensive e-commerce microservices platform to master Docker and Kubernete
 chmod +x scripts/*.sh
 ./scripts/setup-cluster.sh
 
----
-NB: I used headlamp for K8s dashboarding. It is installed using helms with the command below;
-
-```bash
-helm repo add headlamp https://kubernetes-sigs.github.io/headlamp/
-helm install my-headlamp headlamp/headlamp --namespace kube-system
-
-```
-Check out [Headlamp](https://headlamp.dev/) for more info. 
-
 # 2. Deploy infrastructure
 ./scripts/deploy-infrastructure.sh
 

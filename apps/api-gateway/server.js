@@ -58,7 +58,7 @@ app.get('/ready', async (req, res) => {
     const checks = await Promise.all([
       axios.get(`${SERVICES.product}/health`),
       axios.get(`${SERVICES.order}/health`),
-      axios.get(`${SERVICES.user}/health`)
+      axios.get(`${SERVICES.user}/api/health`)
     ]);
     res.json({ status: 'ready', services: 'all services available' });
   } catch (error) {

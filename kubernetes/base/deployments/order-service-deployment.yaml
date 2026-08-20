@@ -33,7 +33,7 @@ spec:
         fsGroup: 1000
       containers:
       - name: order-service
-        image: oniesammy/kubecart-order-service:v1.0.0
+        image: oniesammy/kubecart-order-service:v1.0.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8080
